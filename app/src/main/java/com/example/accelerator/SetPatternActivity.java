@@ -42,11 +42,12 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
         xView = (TextView)findViewById(R.id.newXView);
         yView = (TextView)findViewById(R.id.newYView);
         zView = (TextView)findViewById(R.id.newZView);
+        new_pattern_value = (TextView)findViewById(R.id.new_pattern_value);
         startButton  =(Button)findViewById(R.id.startButton);
         backButton = (Button)findViewById(R.id.backButton);
         setButton  =(Button)findViewById(R.id.setButton);
         setButton.setVisibility(View.INVISIBLE);
-
+        new_pattern_value.setVisibility(View.INVISIBLE);
         startButton.setOnClickListener(buttonsClickListener);
         setButton.setOnClickListener(buttonsClickListener);
         backButton.setOnClickListener(buttonsClickListener);
@@ -59,7 +60,8 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
               case R.id.startButton:
 
                 setButton.setVisibility(View.VISIBLE);
-
+                newPatternList.clear();
+                new_pattern_value.setVisibility(View.VISIBLE);
                   break;
               case R.id.setButton:
 
