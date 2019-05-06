@@ -1,6 +1,7 @@
 package com.example.accelerator;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
@@ -19,22 +21,25 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private static final String TAG = "MainActivity";
 
-    ArrayList<Integer> pattern = new ArrayList<>(3);
+   // ArrayList<Integer> pattern = new ArrayList<>(3);
+   pat pattern = new pat();
+    ArrayList<Integer> patternList = pattern.getPattern();
     ArrayList<Integer> tryPattern = new ArrayList<>();
     private SensorManager sensorManager;
     private double gravity[] = new double[]{ 0, 0, 0 };
     private double linear_acceleration[] = new double[]{ 0, 0, 0};
-    private int counter=0;
+    private int counter=0;//for ACCELERATOR APP
     Sensor accelometer;
     TextView xView,yView,zView,pattern_value;
+    Button set_pattern;
     View colorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        pattern.add(2);
-        pattern.add(-2);
-        pattern.add(1);
+//        pattern.add(2);
+//        pattern.add(-2);
+//        pattern.add(1);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -48,8 +53,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         yView = (TextView)findViewById(R.id.yView);
         zView = (TextView)findViewById(R.id.zView);
        pattern_value = (TextView)findViewById(R.id.pattern_value);
+       set_pattern = (Button)findViewById(R.id.set_pattern);
         colorView = (View)findViewById(R.id.view);
         Log.d(TAG, "onCreate:Registered Accelometer listener");
+
+        set_pattern.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SetPatternActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         colorView.setBackgroundColor(Color.YELLOW);
     }
@@ -123,7 +138,7 @@ if(zValue>=9 ){
 //            colorView.setBackgroundColor(Color.RED);
 //            counter=0;
 //        }
-        if(tryPattern.size()==(pattern.size()) *3){
+        if(tryPattern.size()==(patternList.size()) *3){
             tryPattern.clear();
             colorView.setBackgroundColor(Color.RED);
             //counter=0;
