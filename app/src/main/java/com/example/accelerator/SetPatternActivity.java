@@ -17,13 +17,13 @@ import java.util.ArrayList;
 
 public class SetPatternActivity extends AppCompatActivity implements SensorEventListener {
    // ArrayList<Integer> patternList = new ArrayList<>();
-    pat pattern = new pat();
+
     double xValue = 0;
     double yValue = 0;
     double zValue = 0;
 
     ArrayList<Integer> newPatternList = new ArrayList<>();
-    ArrayList<Integer> patternList = pattern.getPattern();
+    ArrayList<Integer> patternList = new ArrayList<>();
     Button setButton,startButton,backButton,resetButton;
     TextView xView,yView,zView,new_pattern_value;
     private SensorManager sensorManager;
@@ -37,7 +37,7 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
 
 
 
-            sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelometer  =sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener( this,accelometer,SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
         xView = (TextView)findViewById(R.id.newXView);
@@ -68,18 +68,18 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
                   break;
               case R.id.setButton:
 
-                //  patternList.addAll(newPatternList);
-                  pattern.setPattern(newPatternList);
+                  patternList.addAll(newPatternList);
+
 
 
                   break;
               case R.id.backButton:
                   Intent intent = new Intent(SetPatternActivity.this, MainActivity.class);
+                  intent.putExtra("patternList", patternList);
                   startActivity(intent);
                   break;
               case R.id.resetButton:
                   patternList.clear();
-                  pattern.setPattern(null);
                   break;
           }
         }

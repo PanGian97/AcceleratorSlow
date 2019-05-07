@@ -21,9 +21,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private static final String TAG = "MainActivity";
 
-    pat pattern = new pat();
-    ArrayList<Integer> patternList = new ArrayList<>();
+
+
     ArrayList<Integer> tryPattern = new ArrayList<>();
+    ArrayList<Integer> patternList = new ArrayList<>();
     private SensorManager sensorManager;
     private double gravity[] = new double[]{ 0, 0, 0 };
     private double linear_acceleration[] = new double[]{ 0, 0, 0};
@@ -40,7 +41,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Initializing sensor Services");
 
-        patternList = pattern.getPattern();
+        if(getIntent().getSerializableExtra("patternList") != null){
+        patternList= (ArrayList<Integer>) getIntent().getSerializableExtra("patternList");}
+
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelometer  =sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
