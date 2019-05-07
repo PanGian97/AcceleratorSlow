@@ -21,9 +21,10 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
     double xValue = 0;
     double yValue = 0;
     double zValue = 0;
-    ArrayList<Integer> patternList = pattern.getPattern();
+
     ArrayList<Integer> newPatternList = new ArrayList<>();
-    Button setButton,startButton,backButton;
+    ArrayList<Integer> patternList = pattern.getPattern();
+    Button setButton,startButton,backButton,resetButton;
     TextView xView,yView,zView,new_pattern_value;
     private SensorManager sensorManager;
     Sensor accelometer;
@@ -36,16 +37,18 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
 
 
 
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelometer  =sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener( this,accelometer,SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
         xView = (TextView)findViewById(R.id.newXView);
         yView = (TextView)findViewById(R.id.newYView);
         zView = (TextView)findViewById(R.id.newZView);
         new_pattern_value = (TextView)findViewById(R.id.new_pattern_value);
+
         startButton  =(Button)findViewById(R.id.startButton);
         backButton = (Button)findViewById(R.id.backButton);
         setButton  =(Button)findViewById(R.id.setButton);
+        resetButton = (Button)findViewById(R.id.resetButton);
         setButton.setVisibility(View.INVISIBLE);
         new_pattern_value.setVisibility(View.INVISIBLE);
         startButton.setOnClickListener(buttonsClickListener);
@@ -65,13 +68,18 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
                   break;
               case R.id.setButton:
 
-                  patternList.addAll(newPatternList);
+                //  patternList.addAll(newPatternList);
+                  pattern.setPattern(newPatternList);
 
 
                   break;
               case R.id.backButton:
                   Intent intent = new Intent(SetPatternActivity.this, MainActivity.class);
                   startActivity(intent);
+                  break;
+              case R.id.resetButton:
+                  patternList.clear();
+                  pattern.setPattern(null);
                   break;
           }
         }
@@ -84,13 +92,13 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
          yValue = event.values[1];
          zValue = event.values[2];
 
-        if(xValue>=7){newPatternList.add(1);}
-        if(xValue>=9){newPatternList.add(2);}
-        if(xValue>=9){newPatternList.add(3);}
+        if(xValue>=7){patternAdder(1);}
+        if(yValue>=9){patternAdder(2);}
+        if(zValue>=9){patternAdder(3);}
 
-        if(xValue<=-7){newPatternList.add(-1);}
-        if(xValue<=-9){newPatternList.add(-2);}
-        if(xValue<=-9){newPatternList.add(-3);}
+        if(xValue<=-7){patternAdder(-1);}
+        if(yValue<=-9){patternAdder(-2);}
+        if(zValue<=-9){patternAdder(-3);}
 
         StringBuilder stringBuilder = new StringBuilder();
         if(newPatternList.size()>0){
@@ -106,7 +114,13 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
 
 
     }
-
+    public void patternAdder(int sensorValue){
+        if(newPatternList.size()>=1){
+            if((newPatternList.get(newPatternList.size() - 1)) != sensorValue) {
+                newPatternList.add(sensorValue);
+            }
+        }else newPatternList.add(sensorValue);
+    }
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 

@@ -21,29 +21,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private static final String TAG = "MainActivity";
 
-   // ArrayList<Integer> pattern = new ArrayList<>(3);
-   pat pattern = new pat();
-    ArrayList<Integer> patternList = pattern.getPattern();
+    pat pattern = new pat();
+    ArrayList<Integer> patternList = new ArrayList<>();
     ArrayList<Integer> tryPattern = new ArrayList<>();
     private SensorManager sensorManager;
     private double gravity[] = new double[]{ 0, 0, 0 };
     private double linear_acceleration[] = new double[]{ 0, 0, 0};
     private int counter=0;//for ACCELERATOR APP
     Sensor accelometer;
-    TextView xView,yView,zView,pattern_value;
+    TextView xView,yView,zView,pattern_value,setted_pattern;
     Button set_pattern;
     View colorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        pattern.add(2);
-//        pattern.add(-2);
-//        pattern.add(1);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Initializing sensor Services");
+
+        patternList = pattern.getPattern();
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelometer  =sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -52,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         xView = (TextView)findViewById(R.id.xView);
         yView = (TextView)findViewById(R.id.yView);
         zView = (TextView)findViewById(R.id.zView);
+        setted_pattern =(TextView)findViewById(R.id.setted_pattern);
        pattern_value = (TextView)findViewById(R.id.pattern_value);
        set_pattern = (Button)findViewById(R.id.set_pattern);
         colorView = (View)findViewById(R.id.view);
@@ -101,6 +99,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         double yValue = event.values[1];
         double zValue = event.values[2];
 
+        StringBuilder patternStringBuilder = new StringBuilder();
+        for (Integer s : patternList) {
+            patternStringBuilder.append(s );
+        } setted_pattern.setText(patternStringBuilder.toString());
+
+
 if(xValue>=9 ){
          if(Math.abs(xValue)>(Math.abs( yValue)) && (Math.abs(xValue)>Math.abs( zValue))){ patternAdder(1);counter++; }}
 if(yValue>=7){
@@ -123,7 +127,8 @@ if(zValue>=9 ){
         }
         pattern_value.setText(stringBuilder.toString());
 
-        boolean isPatterEqual = tryPattern.equals(pattern);
+
+        boolean isPatterEqual = tryPattern.equals(patternList);
 
          if(isPatterEqual == true){
 

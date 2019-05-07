@@ -12,4 +12,6 @@ public class pat {
     }
 
     ArrayList<Integer> pattern = new ArrayList<>();
+
+
 }
