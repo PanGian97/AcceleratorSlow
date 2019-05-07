@@ -2,11 +2,13 @@ package com.example.accelerator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,17 +16,21 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SetPatternActivity extends AppCompatActivity implements SensorEventListener {
    // ArrayList<Integer> patternList = new ArrayList<>();
-
+   private Context context;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
     double xValue = 0;
     double yValue = 0;
     double zValue = 0;
 
     ArrayList<Integer> newPatternList = new ArrayList<>();
     ArrayList<Integer> patternList = new ArrayList<>();
-    Button setButton,startButton,backButton,resetButton;
+    Button setButton,startButton;
     TextView xView,yView,zView,new_pattern_value;
     private SensorManager sensorManager;
     Sensor accelometer;
@@ -46,14 +52,12 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
         new_pattern_value = (TextView)findViewById(R.id.new_pattern_value);
 
         startButton  =(Button)findViewById(R.id.startButton);
-        backButton = (Button)findViewById(R.id.backButton);
         setButton  =(Button)findViewById(R.id.setButton);
-        resetButton = (Button)findViewById(R.id.resetButton);
         setButton.setVisibility(View.INVISIBLE);
         new_pattern_value.setVisibility(View.INVISIBLE);
         startButton.setOnClickListener(buttonsClickListener);
         setButton.setOnClickListener(buttonsClickListener);
-        backButton.setOnClickListener(buttonsClickListener);
+
 
     }
     private View.OnClickListener buttonsClickListener = new View.OnClickListener() {
@@ -64,23 +68,20 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
 
                 setButton.setVisibility(View.VISIBLE);
                 newPatternList.clear();
+                patternList.clear();
                 new_pattern_value.setVisibility(View.VISIBLE);
                   break;
               case R.id.setButton:
 
                   patternList.addAll(newPatternList);
-
-
-
-                  break;
-              case R.id.backButton:
-                  Intent intent = new Intent(SetPatternActivity.this, MainActivity.class);
-                  intent.putExtra("patternList", patternList);
+                 Intent intent = new Intent(SetPatternActivity.this, MainActivity.class);
+//                  intent.putExtra("patternList", patternList);
+                  saveToSharedPreferences(newPatternList);
                   startActivity(intent);
+
+
                   break;
-              case R.id.resetButton:
-                  patternList.clear();
-                  break;
+
           }
         }
     };
@@ -114,6 +115,11 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
 
 
     }
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
     public void patternAdder(int sensorValue){
         if(newPatternList.size()>=1){
             if((newPatternList.get(newPatternList.size() - 1)) != sensorValue) {
@@ -121,8 +127,20 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
             }
         }else newPatternList.add(sensorValue);
     }
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    public void saveToSharedPreferences( ArrayList<Integer> patternToBeSaved) {
+        context = getApplicationContext();
+
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE);// Initialize the SharedPreference object
+
+        editor = sharedPreferences.edit();// Get SharedPreferences editor
+        Set patternSet = new HashSet();
+
+        // add all the patternValues to the Set
+        patternSet.addAll(patternToBeSaved);
+
+
+        editor.putStringSet("currentPattern", patternSet); // Put an ArrayList to SharedPreferences
+        editor.apply();
     }
 }

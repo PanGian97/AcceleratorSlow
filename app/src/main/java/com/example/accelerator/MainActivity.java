@@ -2,6 +2,7 @@ package com.example.accelerator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -16,12 +17,15 @@ import android.widget.TextView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     private static final String TAG = "MainActivity";
 
-
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     ArrayList<Integer> tryPattern = new ArrayList<>();
     ArrayList<Integer> patternList = new ArrayList<>();
@@ -41,9 +45,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Initializing sensor Services");
 
-        if(getIntent().getSerializableExtra("patternList") != null){
-        patternList= (ArrayList<Integer>) getIntent().getSerializableExtra("patternList");}
-
+       // if(getIntent().getSerializableExtra("patternList") != null){
+        //patternList= (ArrayList<Integer>) getIntent().getSerializableExtra("patternList");}
+         patternRetriever();
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelometer  =sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -152,6 +156,10 @@ if(zValue>=9 ){
             //counter=0;
         }
 }
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 public void patternAdder(int sensorValue){
         if(tryPattern.size()>=1){
         if((tryPattern.get(tryPattern.size() - 1)) != sensorValue) {
@@ -159,34 +167,16 @@ public void patternAdder(int sensorValue){
         }
     }else tryPattern.add(sensorValue);
 }
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
+   public void patternRetriever(){
+       Set<String> patternSet = sharedPreferences.getStringSet("currentPattern",null);
+       if(patternSet != null) {
+           for (String stringPatternValue : patternSet) {
+               int patternValue = Integer.parseInt(stringPatternValue);
+               patternList.add(patternValue);
+           }
+       }
+       else{
+           colorView.setBackgroundColor(Color.BLUE);
+       }
+   }
 }
-//        if(xValue<= 1 && xValue >=-1){
-//            colorView.setBackgroundColor(Color.BLUE);
-//        }
-//        else if(yValue<= 1 && yValue >=-1){
-//            colorView.setBackgroundColor(Color.RED);
-//        }
-//        else if(xValue<= 1 && xValue >=-1){
-//            colorView.setBackgroundColor(Color.GREEN);
-//        }
-//        else  colorView.setBackgroundColor(Color.BLACK);
-
-//          if((xValue>= 4 || yValue>=4 ||zValue>=4) || (xValue<= -4 || yValue<=-4 ||zValue<=-4)){
-//            colorView.setBackgroundColor(Color.RED);
-//        }
-//       else if((xValue>= 2|| yValue>= 2 || zValue>=2) || (xValue<= -2|| yValue<= -2 || zValue<=-2)){
-//           colorView.setBackgroundColor(Color.BLUE);
-//       }
-//        else colorView.setBackgroundColor(Color.BLACK);
-
-//     if(zValue>=4||zValue<=-4){
-//        colorView.setBackgroundColor(Color.RED);
-//    }
-//       else if(zValue>=2||zValue<=-2){
-//        colorView.setBackgroundColor(Color.BLUE);
-//    }
-//        else colorView.setBackgroundColor(Color.BLACK);
