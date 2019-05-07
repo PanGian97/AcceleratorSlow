@@ -15,7 +15,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,8 +28,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private static final String TAG = "MainActivity";
 
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
 
     ArrayList<Integer> tryPattern = new ArrayList<>();
     ArrayList<Integer> patternList = new ArrayList<>();
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
        // if(getIntent().getSerializableExtra("patternList") != null){
         //patternList= (ArrayList<Integer>) getIntent().getSerializableExtra("patternList");}
-        // patternRetriever();
+         patternRetriever();
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelometer  =sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -168,14 +170,17 @@ public void patternAdder(int sensorValue){
     }else tryPattern.add(sensorValue);
 }
    public void patternRetriever(){
+SharedPreferences sharedPreferences = getSharedPreferences("saved pattern",MODE_PRIVATE);
+       Gson gson = new Gson();
+       String json = sharedPreferences.getString("pattern list",null);
+       Type type = new TypeToken<ArrayList<Integer>>() {}.getType();
+       patternList = gson.fromJson(json,type);
 
-       Set<String> patternSet = sharedPreferences.getStringSet("currentPattern",null);
+       if(patternList == null){
 
-           for (String stringPatternValue : patternSet) {
-               int patternValue = Integer.parseInt(stringPatternValue);
-               patternList.add(patternValue);
+           patternList = new ArrayList<>();
+       }
            }
 
 
    }
-}

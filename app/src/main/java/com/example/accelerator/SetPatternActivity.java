@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,8 +25,6 @@ import java.util.Set;
 public class SetPatternActivity extends AppCompatActivity implements SensorEventListener {
    // ArrayList<Integer> patternList = new ArrayList<>();
    private Context context;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
     double xValue = 0;
     double yValue = 0;
     double zValue = 0;
@@ -130,24 +130,11 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
     }
 
     public void saveToSharedPreferences( ArrayList<Integer> patternToBeSaved) {
-        context = getApplicationContext();
-
-        sharedPreferences = getPreferences(Context.MODE_PRIVATE);// Initialize the SharedPreference object
-
-        editor = sharedPreferences.edit();// Get SharedPreferences editor
-        Set patternSet = new HashSet();
-
-        // add all the patternValues to the Set
-        for (int intPatternValue : patternToBeSaved) {
-
-          String stringPatternValue = Integer.toString(intPatternValue);
-            patternSet.add(stringPatternValue);
-            Log.d(TAG, "saveToSharedPreferences: PATTERNSET==="+patternSet);
-        }
-
-
-
-        editor.putStringSet("currentPattern", patternSet); // Put an ArrayList to SharedPreferences
-        editor.apply();
+     SharedPreferences sharedPreferences = getSharedPreferences("saved pattern",MODE_PRIVATE);
+     SharedPreferences.Editor editor = sharedPreferences.edit();
+     Gson gson = new Gson();
+     String json = gson.toJson(newPatternList);
+     editor.putString("pattern list",json);
+     editor.apply();
     }
 }
