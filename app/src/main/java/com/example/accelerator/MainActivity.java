@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
        // if(getIntent().getSerializableExtra("patternList") != null){
         //patternList= (ArrayList<Integer>) getIntent().getSerializableExtra("patternList");}
-         patternRetriever();
+        // patternRetriever();
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelometer  =sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -168,15 +168,14 @@ public void patternAdder(int sensorValue){
     }else tryPattern.add(sensorValue);
 }
    public void patternRetriever(){
+
        Set<String> patternSet = sharedPreferences.getStringSet("currentPattern",null);
-       if(patternSet != null) {
+
            for (String stringPatternValue : patternSet) {
                int patternValue = Integer.parseInt(stringPatternValue);
                patternList.add(patternValue);
            }
-       }
-       else{
-           colorView.setBackgroundColor(Color.BLUE);
-       }
+
+
    }
 }

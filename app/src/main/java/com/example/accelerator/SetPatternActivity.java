@@ -11,6 +11,7 @@ import android.hardware.SensorManager;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -34,7 +35,7 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
     TextView xView,yView,zView,new_pattern_value;
     private SensorManager sensorManager;
     Sensor accelometer;
-
+    private static final String TAG = "SetPatternActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +138,13 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
         Set patternSet = new HashSet();
 
         // add all the patternValues to the Set
-        patternSet.addAll(patternToBeSaved);
+        for (int intPatternValue : patternToBeSaved) {
+
+          String stringPatternValue = Integer.toString(intPatternValue);
+            patternSet.add(stringPatternValue);
+            Log.d(TAG, "saveToSharedPreferences: PATTERNSET==="+patternSet);
+        }
+
 
 
         editor.putStringSet("currentPattern", patternSet); // Put an ArrayList to SharedPreferences
