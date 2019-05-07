@@ -32,7 +32,7 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
     ArrayList<Integer> newPatternList = new ArrayList<>();
     ArrayList<Integer> patternList = new ArrayList<>();
     Button setButton,startButton;
-    TextView xView,yView,zView,new_pattern_value;
+    TextView new_pattern_value;
     private SensorManager sensorManager;
     Sensor accelometer;
     private static final String TAG = "SetPatternActivity";
@@ -47,9 +47,7 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelometer  =sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener( this,accelometer,SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
-        xView = (TextView)findViewById(R.id.newXView);
-        yView = (TextView)findViewById(R.id.newYView);
-        zView = (TextView)findViewById(R.id.newZView);
+
         new_pattern_value = (TextView)findViewById(R.id.new_pattern_value);
 
         startButton  =(Button)findViewById(R.id.startButton);
@@ -110,9 +108,7 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
         }
 
 
-        xView.setText("X: "+ xValue);
-        yView.setText("Y: "+ yValue);
-        zView.setText("Z: "+ zValue);
+
 
 
     }

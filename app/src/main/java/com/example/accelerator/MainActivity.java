@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private int counter=0;//for ACCELERATOR APP
     Sensor accelometer;
     TextView xView,yView,zView,pattern_value,setted_pattern;
+    ImageView phoneStateImg;
     Button set_pattern;
     View colorView;
 
@@ -55,13 +58,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         accelometer  =sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener( this,accelometer,SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
 
-        xView = (TextView)findViewById(R.id.xView);
-        yView = (TextView)findViewById(R.id.yView);
-        zView = (TextView)findViewById(R.id.zView);
+
         setted_pattern =(TextView)findViewById(R.id.setted_pattern);
        pattern_value = (TextView)findViewById(R.id.pattern_value);
        set_pattern = (Button)findViewById(R.id.set_pattern);
-        colorView = (View)findViewById(R.id.view);
+       phoneStateImg = (ImageView)findViewById(R.id.phone_state_img);
         Log.d(TAG, "onCreate:Registered Accelometer listener");
 
         set_pattern.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
-        colorView.setBackgroundColor(Color.YELLOW);
+        phoneStateImg.setBackgroundResource(R.drawable.locked);
     }
     protected void onResume() {
         super.onResume();
@@ -141,11 +142,9 @@ if(zValue>=9 ){
 
          if(isPatterEqual == true){
 
-        colorView.setBackgroundColor(Color.GREEN);}
+        phoneStateImg.setBackgroundResource(R.drawable.unlocked);}
 
-        xView.setText("X: "+ xValue);
-        yView.setText("Y: "+ yValue);
-        zView.setText("Z: "+ zValue);
+
 // ONLY FOR ACCELERATOR APP
 //        if(counter==(pattern.size()) *3){
 //            tryPattern.clear();
@@ -154,7 +153,7 @@ if(zValue>=9 ){
 //        }
         if(tryPattern.size()==(patternList.size()) *3){
             tryPattern.clear();
-            colorView.setBackgroundColor(Color.RED);
+
             //counter=0;
         }
 }
