@@ -23,14 +23,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SetPatternActivity extends AppCompatActivity implements SensorEventListener {
-   // ArrayList<Integer> patternList = new ArrayList<>();
-   private Context context;
+
     double xValue = 0;
     double yValue = 0;
     double zValue = 0;
 
     ArrayList<Integer> newPatternList = new ArrayList<>();
     ArrayList<Integer> patternList = new ArrayList<>();
+
     Button setButton,startButton;
     TextView new_pattern_value;
     private SensorManager sensorManager;
@@ -42,16 +42,14 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_pattern);
 
-
-
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelometer  =sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener( this,accelometer,SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
 
         new_pattern_value = (TextView)findViewById(R.id.new_pattern_value);
-
         startButton  =(Button)findViewById(R.id.startButton);
         setButton  =(Button)findViewById(R.id.setButton);
+
         setButton.setVisibility(View.INVISIBLE);
         new_pattern_value.setVisibility(View.INVISIBLE);
         startButton.setOnClickListener(buttonsClickListener);
@@ -70,15 +68,14 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
                 patternList.clear();
                 new_pattern_value.setVisibility(View.VISIBLE);
                   break;
+
               case R.id.setButton:
 
                   patternList.addAll(newPatternList);
                  Intent intent = new Intent(SetPatternActivity.this, MainActivity.class);
-//                  intent.putExtra("patternList", patternList);
+                  intent.putExtra("patternList", patternList);
                   saveToSharedPreferences(newPatternList);
                   startActivity(intent);
-
-
                   break;
 
           }
@@ -107,15 +104,9 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
         } new_pattern_value.setText(stringBuilder.toString());
         }
 
-
-
-
-
     }
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
+    public void onAccuracyChanged(Sensor sensor, int accuracy) { }
 
     public void patternAdder(int sensorValue){
         if(newPatternList.size()>=1){
@@ -129,7 +120,7 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
      SharedPreferences sharedPreferences = getSharedPreferences("saved pattern",MODE_PRIVATE);
      SharedPreferences.Editor editor = sharedPreferences.edit();
      Gson gson = new Gson();
-     String json = gson.toJson(newPatternList);
+     String json = gson.toJson(patternToBeSaved); // was newPattern
      editor.putString("pattern list",json);
      editor.apply();
     }
