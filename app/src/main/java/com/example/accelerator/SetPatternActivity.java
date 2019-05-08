@@ -63,10 +63,10 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
           switch (v.getId()){
               case R.id.startButton:
 
-                setButton.setVisibility(View.VISIBLE);
-                newPatternList.clear();
-                patternList.clear();
-                new_pattern_value.setVisibility(View.VISIBLE);
+//                setButton.setVisibility(View.VISIBLE);
+//                newPatternList.clear();
+//                patternList.clear();
+//                new_pattern_value.setVisibility(View.VISIBLE);
                   break;
 
               case R.id.setButton:

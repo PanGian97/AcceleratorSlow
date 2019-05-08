@@ -36,5 +36,21 @@ public String showSettedPattern(ArrayList<Integer> aList) {
             }
         }else aList.add(sensorValue);
     }
+    public int tiltAxisSymbolicNumber(double xAxis,double yAxis,double zAxis){
+        int symbolicValue=0;
+        if(xAxis>=9 ){
+            if(Math.abs(xAxis)>(Math.abs( yAxis)) && (Math.abs(xAxis)>Math.abs( zAxis))){ symbolicValue=1; }}
+        if(yAxis>=7){
+            if(Math.abs(yAxis)>(Math.abs( xAxis)) && (Math.abs(yAxis)>Math.abs( zAxis))){ symbolicValue=2;}}
+        if(zAxis>=9 ){
+            if(Math.abs(zAxis)>(Math.abs( xAxis)) && (Math.abs(zAxis)>Math.abs( yAxis))){ symbolicValue=3; }}
 
+        if(xAxis<=-9 ){
+            if(Math.abs(xAxis)>(Math.abs( yAxis)) && (Math.abs(xAxis)>Math.abs( zAxis))){ symbolicValue=-1; }}
+        if(yAxis<=-7){
+            if(Math.abs(yAxis)>(Math.abs( xAxis)) && (Math.abs(yAxis)>Math.abs( zAxis))){ symbolicValue=-2;}}
+        if(zAxis<=-9 ){
+            if(Math.abs(zAxis)>(Math.abs( xAxis)) && (Math.abs(zAxis)>Math.abs( yAxis))){ symbolicValue=-3;}}
+        return symbolicValue;
+    }
 }
