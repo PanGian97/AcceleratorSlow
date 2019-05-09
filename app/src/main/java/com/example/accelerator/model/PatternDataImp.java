@@ -11,11 +11,11 @@ import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class TestPattern {
+public class PatternDataImp implements PatternData {
 
 
-
-    public void patternRetriever(Context context,ArrayList <Integer> savedList){
+@Override
+    public ArrayList<Integer> patternRetriever(Context context, ArrayList <Integer> savedList){
         SharedPreferences sharedPreferences = context.getSharedPreferences("saved pattern",MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("pattern list",null);
@@ -26,7 +26,9 @@ public class TestPattern {
 
             savedList = new ArrayList<>();
         }
+        return savedList;
     }
+    @Override
     public void saveToSharedPreferences( Context context ,ArrayList<Integer> patternToBeSaved) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("saved pattern",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

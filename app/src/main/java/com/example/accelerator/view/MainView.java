@@ -1,6 +1,6 @@
 package com.example.accelerator.view;
 
-public interface ImainView {
+public interface MainView {
     void setterUI(int position);
     void navigateToSetPattern();
 }
