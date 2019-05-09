@@ -6,6 +6,8 @@ import android.view.View;
 import com.example.accelerator.MainActivity;
 import com.example.accelerator.SetPatternActivity;
 
+import java.util.ArrayList;
+
 public class SetPatternPresenter {
 
 
@@ -35,5 +37,12 @@ public class SetPatternPresenter {
 
         return symbolicValue;
         }
+    public void patternAdder(int sensorValue, ArrayList<Integer> newList){
+        if(newList.size()>=1){
+            if((newList.get(newList.size() - 1)) != sensorValue) {
+                newList.add(sensorValue);
+            }
+        }else newList.add(sensorValue);
+    }
 }
 

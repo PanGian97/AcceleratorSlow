@@ -108,20 +108,20 @@ public class SetPatternActivity extends AppCompatActivity implements SensorEvent
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) { }
 
-    public void patternAdder(int sensorValue){
-        if(newPatternList.size()>=1){
-            if((newPatternList.get(newPatternList.size() - 1)) != sensorValue) {
-                newPatternList.add(sensorValue);
-            }
-        }else newPatternList.add(sensorValue);
-    }
+//    public void patternAdder(int sensorValue){
+//        if(newPatternList.size()>=1){
+//            if((newPatternList.get(newPatternList.size() - 1)) != sensorValue) {
+//                newPatternList.add(sensorValue);
+//            }
+//        }else newPatternList.add(sensorValue);
+//    }
 
-    public void saveToSharedPreferences( ArrayList<Integer> patternToBeSaved) {
-     SharedPreferences sharedPreferences = getSharedPreferences("saved pattern",MODE_PRIVATE);
-     SharedPreferences.Editor editor = sharedPreferences.edit();
-     Gson gson = new Gson();
-     String json = gson.toJson(patternToBeSaved); // was newPattern
-     editor.putString("pattern list",json);
-     editor.apply();
-    }
+//    public void saveToSharedPreferences( ArrayList<Integer> patternToBeSaved) {
+//     SharedPreferences sharedPreferences = getSharedPreferences("saved pattern",MODE_PRIVATE);
+//     SharedPreferences.Editor editor = sharedPreferences.edit();
+//     Gson gson = new Gson();
+//     String json = gson.toJson(patternToBeSaved); // was newPattern
+//     editor.putString("pattern list",json);
+//     editor.apply();
+//    }
 }

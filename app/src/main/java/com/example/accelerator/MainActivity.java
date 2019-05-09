@@ -17,6 +17,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.accelerator.presenter.ImainPresenter;
+import com.example.accelerator.presenter.MainPresenter;
+import com.example.accelerator.view.ImainView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -26,14 +29,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity implements SensorEventListener, ImainView {
 
     private static final String TAG = "MainActivity";
 
-
-    ArrayList<Integer> tryPattern = new ArrayList<>();
-    ArrayList<Integer> patternList = new ArrayList<>();
-
+//ON PRESENTER
+//    ArrayList<Integer> tryPattern = new ArrayList<>();
+//    ArrayList<Integer> patternList = new ArrayList<>();
+    private ImainPresenter imainPresenter;
     private SensorManager sensorManager;
 
     Sensor accelometer;
@@ -62,13 +65,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         set_pattern.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SetPatternActivity.class);
-                startActivity(intent);
 
+
+                imainPresenter.setPatternClicked();
             }
         });
 
-        phoneStateImg.setBackgroundResource(R.drawable.locked);
+
     }
     protected void onResume() {
         super.onResume();
@@ -87,12 +90,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         double yValue = event.values[1];
         double zValue = event.values[2];
 
-
-        setted_pattern.setText(patternStringBuilder.toString());
-
-      pattern_value.setText(stringBuilder.toString());
-
-       phoneStateImg.setBackgroundResource(R.drawable.unlocked);
+        imainPresenter.onSensorChanged(event.values[0], event.values[1], event.values[2]);
+        imainPresenter.tiltAxisSymbolicNumber();
+        imainPresenter.patternComparisor();
 //         }
 //
 // NOWHERE !!!!!!!
@@ -103,4 +103,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) { }
 
+@Override
+    public void setterUI(int position) {
+        switch (position) {
+            case 0: phoneStateImg.setBackgroundResource(R.drawable.locked); break;
+
+           case 1: setted_pattern.setText(imainPresenter.showSettedPattern()); break;
+
+           case 2: pattern_value.setText(imainPresenter.showTryPattern()); break;
+
+           case 3: phoneStateImg.setBackgroundResource(R.drawable.unlocked); break;
+        }
+    }
+    @Override
+public void navigateToSetPattern() {
+    Intent intent = new Intent(MainActivity.this, SetPatternActivity.class);
+    startActivity(intent);
+}
    }
