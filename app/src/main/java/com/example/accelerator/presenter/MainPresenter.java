@@ -9,5 +9,7 @@ public interface MainPresenter {
     void tiltAxisSymbolicNumber();
     void setPatternClicked();
     void loadPatternFromSharedPref();
+    void unlockPhoneScreen();
+    void lockPhoneScreen();
 
 }

@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //ON PRESENTER
 //    ArrayList<Integer> tryPattern = new ArrayList<>();
 //    ArrayList<Integer> patternList = new ArrayList<>();
-    private MainPresenter mainPresenterImp;
+    private MainPresenter mainPresenter;
     private SensorManager sensorManager;
 
     Sensor accelometer;
@@ -39,9 +39,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Initializing sensor Services");
-        mainPresenterImp = new MainPresenterImp(this,this);
-         mainPresenterImp.loadPatternFromSharedPref();
-
+        mainPresenter = new MainPresenterImp(this,this);
+         mainPresenter.loadPatternFromSharedPref();
+         mainPresenter.lockPhoneScreen();
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelometer  =sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             public void onClick(View v) {
 
 
-                mainPresenterImp.setPatternClicked();
+                mainPresenter.setPatternClicked();
             }
         });
 
@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         double yValue = event.values[1];
         double zValue = event.values[2];
 
-        mainPresenterImp.onSensorChanged(event.values[0], event.values[1], event.values[2]);
-        mainPresenterImp.tiltAxisSymbolicNumber();
-        mainPresenterImp.patternComparisor();
+        mainPresenter.onSensorChanged(xValue, yValue, zValue);
+        mainPresenter.tiltAxisSymbolicNumber();
+        if(mainPresenter.patternComparisor()){mainPresenter.unlockPhoneScreen();}
 //         }
 //
 // NOWHERE !!!!!!!
@@ -100,11 +100,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         switch (position) {
             case 0: phoneStateImg.setBackgroundResource(R.drawable.locked); break;
 
-           case 1: setted_pattern.setText(mainPresenterImp.showSettedPattern()); break;
+           case 1:  phoneStateImg.setBackgroundResource(R.drawable.unlocked); break;
 
-           case 2: pattern_value.setText(mainPresenterImp.showTryPattern()); break;
+           case 2: pattern_value.setText(mainPresenter.showTryPattern()); break;
 
-           case 3: phoneStateImg.setBackgroundResource(R.drawable.unlocked); break;
+           case 3: setted_pattern.setText(mainPresenter.showSettedPattern()); break;
         }
     }
     @Override

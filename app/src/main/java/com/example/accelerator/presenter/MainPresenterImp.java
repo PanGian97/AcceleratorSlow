@@ -3,6 +3,7 @@ package com.example.accelerator.presenter;
 import android.content.Context;
 
 import com.example.accelerator.model.PatternData;
+import com.example.accelerator.model.PatternDataImp;
 import com.example.accelerator.view.MainView;
 
 import java.util.ArrayList;
@@ -12,19 +13,22 @@ public class MainPresenterImp implements MainPresenter {
     private MainView mainView;
     private PatternData patternData;
     private Context context;
-    ArrayList<Integer> tryPattern = new ArrayList<>();
-    ArrayList<Integer> patternList = new ArrayList<>();
-    double xValue = 0;
-    double yValue = 0;
-    double zValue = 0;
-    public MainPresenterImp(MainView imainView,Context context)
+    private ArrayList<Integer> tryPattern = new ArrayList<>();
+    private ArrayList<Integer> patternList = new ArrayList<>();
+
+    private double xValue = 0;
+    private double yValue = 0;
+    private double zValue = 0;
+
+    public MainPresenterImp(MainView mainView,Context context)
     {
-        this.mainView = imainView;
+        this.patternData = new PatternDataImp();
+        this.mainView = mainView;
         this.context = context;
     }
 
     @Override
-public void onSensorChanged(double xValue,double yValue,double zValue){
+public void onSensorChanged(double xValue, double yValue, double zValue){
 
     this.xValue = xValue;
     this.yValue = yValue;
@@ -33,8 +37,18 @@ public void onSensorChanged(double xValue,double yValue,double zValue){
 }
 @Override
 public void loadPatternFromSharedPref(){
-    patternList = patternData.patternRetriever(context,patternList);
+    patternList = patternData.patternRetriever(context);
 }
+@Override
+public void lockPhoneScreen(){
+        mainView.setterUI(0);
+        mainView.setterUI(2);
+        mainView.setterUI(3);
+}
+@Override
+public void unlockPhoneScreen(){
+        mainView.setterUI(1);
+    }
   @Override
 public String showSettedPattern() {
         loadPatternFromSharedPref();
@@ -58,8 +72,8 @@ public String showSettedPattern() {
     @Override
    public Boolean patternComparisor(){
        Boolean state =false;
-       boolean isPatterEqual = tryPattern.equals(patternList);
-         if(isPatterEqual == true){state=true;}
+       boolean isPatternEqual = tryPattern.equals(patternList);
+         if(isPatternEqual){state=true;}
           return state;
     }
 @Override

@@ -5,6 +5,6 @@ import android.content.Context;
 import java.util.ArrayList;
 
 public interface PatternData {
-    ArrayList patternRetriever(Context context, ArrayList<Integer> savedList);
+    ArrayList<Integer> patternRetriever(Context context);
     void saveToSharedPreferences( Context context ,ArrayList<Integer> patternToBeSaved);
 }
