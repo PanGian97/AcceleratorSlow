@@ -3,7 +3,7 @@ package com.example.accelerator.presenter;
 import android.content.Context;
 
 import com.example.accelerator.model.PatternData;
-import com.example.accelerator.model.PatternDataImp;
+
 import com.example.accelerator.view.MainView;
 
 import java.util.ArrayList;
@@ -22,9 +22,10 @@ public class MainPresenterImp implements MainPresenter {
 
     public MainPresenterImp(MainView mainView,Context context)
     {
-        this.patternData = new PatternDataImp();
+
         this.mainView = mainView;
         this.context = context;
+
     }
 
     @Override

@@ -1,48 +1,88 @@
 package com.example.accelerator.presenter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
 import com.example.accelerator.MainActivity;
 import com.example.accelerator.SetPatternActivity;
+import com.example.accelerator.model.PatternData;
+import com.example.accelerator.model.PatternDataImp;
+import com.example.accelerator.view.SetPatternView;
 
 import java.util.ArrayList;
 
-public class SetPatternPresenterImp {
+public class SetPatternPresenterImp implements SetPatternPresenter{
+
+    private SetPatternView setPatternView;
+    private PatternData patternData;
+    private Context context;
+
+    private ArrayList<Integer> newPatternList = new ArrayList<>();
+    private ArrayList<Integer> patternList = new ArrayList<>();
+    private double xValue = 0;
+    private double yValue = 0;
+    private double zValue = 0;
+public SetPatternPresenterImp(SetPatternView setPatternView, Context context){
+  this.setPatternView=setPatternView;
+  this.context = context;
 
 
+}
     public void startButtonTasks(){
-    setButton.setVisibility(View.VISIBLE);
-                newPatternList.clear();
-                patternList.clear();
-                new_pattern_value.setVisibility(View.VISIBLE);
+        newPatternList.clear();
+        patternList.clear();
+        setPatternView.startButtonFunction();
 }
     public void setButtonTasks() {
         patternList.addAll(newPatternList);
-        Intent intent = new Intent(SetPatternActivity.this, MainActivity.class);
-        intent.putExtra("patternList", patternList);
-        saveToSharedPreferences(newPatternList);
-        startActivity(intent);
+        setPatternView.setButtonFunction();
+
+        patternData.saveToSharedPreferences(context,newPatternList);
+
     }
-    public int tiltAxisSymbolicNumberToBeSaved(double xAxis,double yAxis,double zAxis){
+    @Override
+    public void onSensorChanged(double xValue, double yValue, double zValue){
+
+        this.xValue = xValue;
+        this.yValue = yValue;
+        this.zValue = zValue;
+
+    }
+    public void tiltAxisSymbolicNumberToBeSaved(){
         int symbolicValue=0;
 
-     if(xAxis>=7){symbolicValue=1;}
-        if(yAxis>=9){symbolicValue=2;}
-        if(zAxis>=9){symbolicValue=3;}
+        if(xValue>=7){symbolicValue=1;}
+        if(yValue>=9){symbolicValue=2;}
+        if(zValue>=9){symbolicValue=3;}
 
-        if(xAxis<=-7){symbolicValue=-1;}
-        if(yAxis<=-9){symbolicValue=-2;}
-        if(zAxis<=-9){symbolicValue=-3;}
+        if(xValue<=-7){symbolicValue=-1;}
+        if(yValue<=-9){symbolicValue=-2;}
+        if(zValue<=-9){symbolicValue=-3;}
 
-        return symbolicValue;
+        patternAdder(symbolicValue);
         }
-    public void patternAdder(int sensorValue, ArrayList<Integer> newList){
-        if(newList.size()>=1){
-            if((newList.get(newList.size() - 1)) != sensorValue) {
-                newList.add(sensorValue);
+    public void patternAdder(int sensorValue){//called in this class by tiltAxisSymbolicToBeSaved
+        if(newPatternList.size()>=1){
+            if((newPatternList.get(newPatternList.size() - 1)) != sensorValue) {
+                newPatternList.add(sensorValue);
             }
-        }else newList.add(sensorValue);
+        }else newPatternList.add(sensorValue);
     }
+
+    public void convTypingPattern() {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (newPatternList.size() > 0) {
+            for (Integer s : newPatternList) {
+                stringBuilder.append(s);
+            }
+        } setPatternView.showTypingPattern(stringBuilder.toString());
+
+    }
+    @Override
+    public void savePatternToSharedPref(){
+           patternData.saveToSharedPreferences(context,patternList);
+    }
+
 }
 

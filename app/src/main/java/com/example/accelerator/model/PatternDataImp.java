@@ -16,11 +16,16 @@ public class PatternDataImp implements PatternData {
 
 @Override
     public ArrayList<Integer> patternRetriever(Context context){
+
         SharedPreferences sharedPreferences = context.getSharedPreferences("saved pattern",MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("pattern list",null);
         Type type = new TypeToken<ArrayList<Integer>>() {}.getType();
         return gson.fromJson(json,type);
+    if(patternList == null){
+
+        patternList = new ArrayList<>();
+    }
     }
     @Override
     public void saveToSharedPreferences( Context context ,ArrayList<Integer> patternToBeSaved) {

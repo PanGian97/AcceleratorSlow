@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public interface SetPatternView {
 
-
+    void startButtonFunction();
+    void showTypingPattern(String s);
+    void setButtonFunction();
 
 }
