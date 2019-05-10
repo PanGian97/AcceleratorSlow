@@ -22,10 +22,7 @@ public class PatternDataImp implements PatternData {
         String json = sharedPreferences.getString("pattern list",null);
         Type type = new TypeToken<ArrayList<Integer>>() {}.getType();
         return gson.fromJson(json,type);
-    if(patternList == null){
 
-        patternList = new ArrayList<>();
-    }
     }
     @Override
     public void saveToSharedPreferences( Context context ,ArrayList<Integer> patternToBeSaved) {

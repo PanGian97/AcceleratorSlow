@@ -81,6 +81,10 @@ public SetPatternPresenterImp(SetPatternView setPatternView, Context context){
     }
     @Override
     public void savePatternToSharedPref(){
+        if(patternList == null){
+
+            patternList = new ArrayList<>();
+        }
            patternData.saveToSharedPreferences(context,patternList);
     }
 
