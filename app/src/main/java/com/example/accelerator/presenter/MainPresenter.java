@@ -1,5 +1,7 @@
 package com.example.accelerator.presenter;
 
+import java.util.ArrayList;
+
 public interface MainPresenter {
     void onSensorChanged(double xValue,double yValue,double zValue);
     String showSettedPattern();
@@ -8,7 +10,7 @@ public interface MainPresenter {
     void tryPatternAdder(int sensorValue);
     void tiltAxisSymbolicNumber();
     void setPatternClicked();
-    void loadPatternFromSharedPref();
+    ArrayList<Integer> loadPatternFromSharedPref();
     void unlockPhoneScreen();
     void lockPhoneScreen();
 

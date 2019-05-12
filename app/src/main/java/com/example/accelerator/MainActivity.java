@@ -39,9 +39,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Initializing sensor Services");
-        mainPresenter = new MainPresenterImp(this,this);
-         mainPresenter.loadPatternFromSharedPref();
-         mainPresenter.lockPhoneScreen();
+        mainPresenter = new MainPresenterImp(this,MainActivity.this);
+        //
+
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelometer  =sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 mainPresenter.setPatternClicked();
             }
         });
-
+        mainPresenter.loadPatternFromSharedPref();
+        mainPresenter.lockPhoneScreen();
 
     }
     protected void onResume() {
@@ -84,6 +85,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         mainPresenter.onSensorChanged(xValue, yValue, zValue);
         mainPresenter.tiltAxisSymbolicNumber();
+
+        pattern_value.setText(mainPresenter.showTryPattern());
+        setted_pattern.setText(mainPresenter.showSettedPattern());
+
         if(mainPresenter.patternComparisor()){mainPresenter.unlockPhoneScreen();}
 //         }
 //
@@ -102,9 +107,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
            case 1:  phoneStateImg.setBackgroundResource(R.drawable.unlocked); break;
 
-           case 2: pattern_value.setText(mainPresenter.showTryPattern()); break;
-
-           case 3: setted_pattern.setText(mainPresenter.showSettedPattern()); break;
         }
     }
     @Override

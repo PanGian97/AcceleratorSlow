@@ -14,7 +14,10 @@ import static android.content.Context.MODE_PRIVATE;
 public class PatternDataImp implements PatternData {
 
 
-@Override
+    public PatternDataImp() {
+    }
+
+    @Override
     public ArrayList<Integer> patternRetriever(Context context){
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("saved pattern",MODE_PRIVATE);
@@ -33,5 +36,10 @@ public class PatternDataImp implements PatternData {
         editor.putString("pattern list",json);
         editor.apply();
     }
-
+   @Override
+    public void saveToSharedPreferencesDefault(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("saved pattern",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        sharedPreferences.getInt("pattern list",1);
+   }
 }

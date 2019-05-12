@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.accelerator.model.PatternData;
 
+import com.example.accelerator.model.PatternDataImp;
 import com.example.accelerator.view.MainView;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class MainPresenterImp implements MainPresenter {
 
         this.mainView = mainView;
         this.context = context;
+        patternData = new PatternDataImp();
 
     }
 
@@ -37,28 +39,30 @@ public void onSensorChanged(double xValue, double yValue, double zValue){
 
 }
 @Override
-public void loadPatternFromSharedPref(){
-    patternList = patternData.patternRetriever(context);
+public ArrayList<Integer> loadPatternFromSharedPref(){
+        //patternData.saveToSharedPreferencesDefault(context);
+
+    return  patternData.patternRetriever(context);
 }
 @Override
 public void lockPhoneScreen(){
         mainView.setterUI(0);
-        mainView.setterUI(2);
-        mainView.setterUI(3);
 }
 @Override
 public void unlockPhoneScreen(){
         mainView.setterUI(1);
     }
+
   @Override
 public String showSettedPattern() {
-        loadPatternFromSharedPref();
+    patternList=loadPatternFromSharedPref();
     StringBuilder patternStringBuilder = new StringBuilder();
-    for (Integer s : tryPattern) {
+    for (Integer s :patternList) {
         patternStringBuilder.append(s);
     }
         String settedPatternOutput = patternStringBuilder.toString();
         return settedPatternOutput;
+
 }
 @Override
     public String showTryPattern() {
@@ -88,19 +92,19 @@ public String showSettedPattern() {
     public void tiltAxisSymbolicNumber(){
         int symbolicValue=0;
         if(xValue>=9 ){
-            if(Math.abs(xValue)>(Math.abs( yValue)) && (Math.abs(xValue)>Math.abs( zValue))){ symbolicValue=1; }}
+            if(Math.abs(xValue)>(Math.abs( yValue)) && (Math.abs(xValue)>Math.abs( zValue))){ symbolicValue=1;  tryPatternAdder(symbolicValue);}}
         if(yValue>=7){
-            if(Math.abs(yValue)>(Math.abs( xValue)) && (Math.abs(yValue)>Math.abs( zValue))){ symbolicValue=2;}}
+            if(Math.abs(yValue)>(Math.abs( xValue)) && (Math.abs(yValue)>Math.abs( zValue))){ symbolicValue=2; tryPatternAdder(symbolicValue);}}
         if(zValue>=9 ){
-            if(Math.abs(zValue)>(Math.abs( xValue)) && (Math.abs(zValue)>Math.abs( yValue))){ symbolicValue=3; }}
+            if(Math.abs(zValue)>(Math.abs( xValue)) && (Math.abs(zValue)>Math.abs( yValue))){ symbolicValue=3; tryPatternAdder(symbolicValue); }}
 
         if(xValue<=-9 ){
-            if(Math.abs(xValue)>(Math.abs( yValue)) && (Math.abs(xValue)>Math.abs( zValue))){ symbolicValue=-1; }}
+            if(Math.abs(xValue)>(Math.abs( yValue)) && (Math.abs(xValue)>Math.abs( zValue))){ symbolicValue=-1;  tryPatternAdder(symbolicValue);}}
         if(yValue<=-7){
-            if(Math.abs(yValue)>(Math.abs( xValue)) && (Math.abs(yValue)>Math.abs( zValue))){ symbolicValue=-2;}}
+            if(Math.abs(yValue)>(Math.abs( xValue)) && (Math.abs(yValue)>Math.abs( zValue))){ symbolicValue=-2; tryPatternAdder(symbolicValue);}}
         if(zValue<=-9 ){
-            if(Math.abs(zValue)>(Math.abs( xValue)) && (Math.abs(zValue)>Math.abs( yValue))){ symbolicValue=-3;}}
-        tryPatternAdder(symbolicValue);
+            if(Math.abs(zValue)>(Math.abs( xValue)) && (Math.abs(zValue)>Math.abs( yValue))){ symbolicValue=-3; tryPatternAdder(symbolicValue);}}
+
     }
     @Override
     public void setPatternClicked(){

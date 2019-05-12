@@ -26,7 +26,7 @@ public class SetPatternPresenterImp implements SetPatternPresenter{
 public SetPatternPresenterImp(SetPatternView setPatternView, Context context){
   this.setPatternView=setPatternView;
   this.context = context;
-
+    patternData = new PatternDataImp();
 
 }
     public void startButtonTasks(){
@@ -81,10 +81,10 @@ public SetPatternPresenterImp(SetPatternView setPatternView, Context context){
     }
     @Override
     public void savePatternToSharedPref(){
-        if(patternList == null){
-
-            patternList = new ArrayList<>();
-        }
+//        if(patternList == null){
+//
+//            patternList = new ArrayList<>();
+//        }
            patternData.saveToSharedPreferences(context,patternList);
     }
 
